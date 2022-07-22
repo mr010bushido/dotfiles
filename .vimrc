@@ -1,14 +1,8 @@
-set nocompatible
-set number 		        " Show line numbers
-set tabstop=4 		    " How many columns of whitespace a "level of indentation" is worth
-set shiftwidth=4 	    " Use spaces when tabbing
-set expandtab		     
-set incsearch 		    " Enable incremental search
-set hlsearch 		    " Enable highlight search
-set termwinsize=12x0    " Snt terminal size
-set splitbelow		    " Always split below 
-set mouse=a 		    " Enable mouse drag on window splits
-
+set nocompatible            " Required"
+set number 		              " Show line numbers
+set incsearch 		          " Enable incremental search
+set hlsearch 		            " Enable highlight search
+set termwinsize=12x0        " Snt terminal size
 syntax on
 
 set rtp +=~/.vim
@@ -19,7 +13,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'preservim/nerdtree', {'on':'NERDTreeToggle'} " File browser
 Plug 'preservim/tagbar' " Tag browser
 Plug 'LunarWatcher/auto-pairs'
-Plug 'maxboisvert/vim-simple-complete'
+" Plug 'maxboisvert/vim-simple-complete'
 Plug 'matze/vim-move'
 Plug 'tyru/open-browser.vim' "opens url in browser
 Plug 'vim-airline/vim-airline'
@@ -31,15 +25,44 @@ Plug 'joshdick/onedark.vim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'dyng/ctrlsf.vim'
 Plug 'Yggdroot/indentLine'
+Plug 'vim-scripts/indentpython.vim'
+Plug 'Valloric/YouCompleteMe'
+Plug 'vim-syntastic/syntastic'
+Plug 'nvie/vim-flake8'
+Plug 'jistr/vim-nerdtree-tabs'
+Plug 'tmhedberg/SimpylFold'
 
 call plug#end()
 
+" Split layout
+set splitbelow
+set splitright
+
+" Split navigations
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Code Folding
+"
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+
+" Enable folding with the spacebar
+nnoremap <space> za
+
+let g:SimpylFold_docstring_preview=1
+
+" NERDTree options
 let NERDTreeShowBookmarks = 1   " Show the bookmarks table
 let NERDTreeShowHidden = 1      " Show hidden files
 let NERDTreeShowLineNumbers = 0 " Hide line numbers
 let NERDTreeMinimalMenu = 1     " Use the minimal menu (m)
 let NERDTreeWinPos ='left'      " Panel opens on the left side
 let NERDTreeWinSize = 31        " Set panel width to 31 columns
+let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
 nmap <F2> :NERDTreeToggle<CR>
 
@@ -102,3 +125,36 @@ let g:indentLine_concealcursor = 'inc'
 let g:indentLine_conceallevel = 2
 let g:vim_json_conceal=0
 let g:markdown_syntax_conceal=0
+
+" Python Indentation 
+
+au BufNewFile,BufRead *.py
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
+
+au BufNewFile,BufRead *.js, *.html, *.css
+    \ set tabstop=2
+    \ set softtabstop=2
+    \ set shiftwidth=2
+
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+" UTF--8 Support
+set encoding=utf8
+
+" Auto complete options
+let g:ycm_autoclose_preview_window_after_completion=1
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+" Syntax checking and highlighting
+let python_highlight_all=1
+syntax on
+
+" SYstem Clipboard
+set clipboard=unnamed
+
